@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="GestionDeVehiculos.BL/GestionDeVehiculos.BL.csproj" Id="8d61fa63-09ac-43fb-bda1-5856e1285885" />
   <Project Path="GestionDeVehiculos.DA/GestionDeVehiculos.DA.csproj" Id="e16710c9-801f-4df7-a9fa-8c94d69ed4fe" />
   <Project Path="GestionDeVehiculos.MO/GestionDeVehiculos.Model.csproj" />
   <Project Path="GestionDeVehiculos.SI/GestionDeVehiculos.SI.csproj" />
