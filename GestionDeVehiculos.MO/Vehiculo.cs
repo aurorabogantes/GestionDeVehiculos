@@ -10,6 +10,6 @@ namespace GestionDeVehiculos.Model
         public Marca Marca { get; set; }
         public int Año { get; set; }
         public string Modelo { get; set; }
-        public int DobleTracion { get; set; }
+        public int DobleTraccion { get; set; }
     }
 }
