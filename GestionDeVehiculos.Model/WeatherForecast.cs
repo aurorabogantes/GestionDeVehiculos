@@ -1,4 +1,4 @@
-namespace GestionDeVehiculos.SI
+namespace GestionDeVehiculos.Model
 {
     public class WeatherForecast
     {
