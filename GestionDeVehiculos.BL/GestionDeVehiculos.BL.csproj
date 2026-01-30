@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GestionDeVehiculos.DA\GestionDeVehiculos.DA.csproj" />
+    <ProjectReference Include="..\GestionDeVehiculos.Model\GestionDeVehiculos.Model.csproj" />
     <ProjectReference Include="..\GestionDeVehiculos.MO\GestionDeVehiculos.Model.csproj" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GestionDeVehiculos.BL
 {
-    internal interface IServicioVehiculo
+    public interface IServicioVehiculo
     {
         Task<IEnumerable<Vehiculo>> GetAllAsync(CancellationToken ct = default);
         Task<Vehiculo?> GetByIdAsync(int id, CancellationToken ct = default);
