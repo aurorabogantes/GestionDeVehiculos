@@ -7,7 +7,8 @@ namespace GestionDeVehiculos.Model
         public int Id { get; set; }
         public Marca Marca { get; set; }
         public int Año { get; set; }
-        public string Modelo { get; set; }
+        public string Modelo { get; set; } = string.Empty;
         public int DobleTraccion { get; set; }
     }
 }
+
