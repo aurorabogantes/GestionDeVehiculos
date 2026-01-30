@@ -1,43 +1,60 @@
 ﻿using GestionDeVehiculos.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GestionDeVehiculos.DA
 {
     public class RepositorioVehiculoEnMemoria : IRepositorioVehiculo
     {
-        private readonly ConcurrentDictionary<int, Vehiculo> _tienda = new();
-        private int _idContador = 0;
+        private readonly VehiculosDbContext _context;
 
-        public Task<Vehiculo> AddAsync(Vehiculo vehiculo, CancellationToken ct = default) {
-            var id = Interlocked.Increment(ref _idContador);
-            vehiculo.Id = id;
-            _tienda[id] = vehiculo;
-            return Task.FromResult(vehiculo);
-        }
-
-        public Task<bool> DeleteAsync(int id, CancellationToken ct  = default) {
-            return Task.FromResult(_tienda.TryRemove(id, out _));
-        }
-
-        public Task<Vehiculo?> GetByIdAsync(int id, CancellationToken ct = default)
+        public RepositorioVehiculoEnMemoria(VehiculosDbContext context)
         {
-            _tienda.TryGetValue(id, out var vehiculo);
-            return Task.FromResult(vehiculo);
+            _context = context;
         }
 
-        public Task<IEnumerable<Vehiculo>> GettAllAsync(CancellationToken ct = default)
+        public async Task<Vehiculo> AddAsync(Vehiculo vehiculo, CancellationToken ct = default)
         {
-            return Task.FromResult(_tienda.Values.AsEnumerable());
+            _context.Vehiculos.Add(vehiculo);
+            await _context.SaveChangesAsync(ct);
+            return vehiculo;
         }
 
-        public Task<bool> UpdateAsync(Vehiculo vehiculo, CancellationToken ct = default)
+        public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
         {
-            if (!_tienda.ContainsKey(vehiculo.Id)) return Task.FromResult(false);
-            _tienda[vehiculo.Id] = vehiculo;
-            return Task.FromResult(true);
+            var vehiculo = await _context.Vehiculos.FindAsync([id], ct);
+            if (vehiculo is null)
+                return false;
+
+            _context.Vehiculos.Remove(vehiculo);
+            await _context.SaveChangesAsync(ct);
+            return true;
+        }
+
+        public async Task<Vehiculo?> GetByIdAsync(int id, CancellationToken ct = default)
+        {
+            return await _context.Vehiculos.FindAsync([id], ct);
+        }
+
+        public async Task<IEnumerable<Vehiculo>> GettAllAsync(CancellationToken ct = default)
+        {
+            return await _context.Vehiculos.ToListAsync(ct);
+        }
+
+        public async Task<bool> UpdateAsync(Vehiculo vehiculo, CancellationToken ct = default)
+        {
+            var existente = await _context.Vehiculos.FindAsync([vehiculo.Id], ct);
+            if (existente is null)
+                return false;
+
+            _context.Entry(existente).CurrentValues.SetValues(vehiculo);
+            await _context.SaveChangesAsync(ct);
+            return true;
         }
     }
 }
+

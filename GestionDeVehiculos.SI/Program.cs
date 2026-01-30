@@ -1,10 +1,14 @@
 using GestionDeVehiculos.BL;
 using GestionDeVehiculos.DA;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<VehiculosDbContext>(options =>
+    options.UseInMemoryDatabase("VehiculosDb"));
+
 builder.Services.AddScoped<IRepositorioVehiculo, RepositorioVehiculoEnMemoria>();
 builder.Services.AddScoped<IServicioVehiculo, ServicioVehiculo>();
 
